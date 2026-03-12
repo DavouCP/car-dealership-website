@@ -7,17 +7,22 @@ const styles: Record<string, CSSProperties> = {
   footer: {
     position: "relative",
     borderTop: "1px solid hsl(0 0% 15%)",
-    padding: "48px 24px",
+    padding: "48px 16px",
+    width: "100%",
+    boxSizing: "border-box" as const,
+    overflowX: "hidden" as const,
   },
   container: {
     maxWidth: "1280px",
     margin: "0 auto",
+    width: "100%",
   },
   grid: {
     display: "flex",
     flexWrap: "wrap" as const,
-    gap: "32px",
-    justifyContent: "space-between",
+    gap: "32px 48px",
+    justifyContent: "flex-start",
+    width: "100%",
   },
   brandSection: {
     display: "flex",
@@ -56,6 +61,7 @@ const styles: Record<string, CSSProperties> = {
     fontSize: "14px",
     maxWidth: "280px",
     lineHeight: 1.7,
+    width: "100%",
   },
   sectionTitle: {
     color: "hsl(0 0% 95% / 0.4)",
@@ -102,14 +108,16 @@ const styles: Record<string, CSSProperties> = {
     transition: "color 0.2s ease",
   },
   bottomBar: {
-    marginTop: "48px",
-    paddingTop: "24px",
+    marginTop: "40px",
+    paddingTop: "20px",
     borderTop: "1px solid hsl(0 0% 15%)",
     display: "flex",
     flexWrap: "wrap" as const,
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "center",
     gap: "12px",
+    width: "100%",
+    textAlign: "center" as const,
   },
   copyright: {
     color: "hsl(0 0% 55% / 0.5)",

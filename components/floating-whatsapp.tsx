@@ -7,8 +7,8 @@ import { MessageCircle } from "lucide-react"
 const styles: Record<string, CSSProperties> = {
   button: {
     position: "fixed",
-    bottom: "24px",
-    right: "24px",
+    bottom: "16px",
+    right: "16px",
     zIndex: 40,
     display: "flex",
     alignItems: "center",
@@ -16,7 +16,7 @@ const styles: Record<string, CSSProperties> = {
     background: "hsl(200 100% 55%)",
     color: "hsl(0 0% 4%)",
     borderRadius: "9999px",
-    padding: "12px 20px",
+    padding: "12px 16px",
     boxShadow: "0 4px 30px hsl(200 100% 55% / 0.4)",
     textDecoration: "none",
     transition: "box-shadow 0.3s ease",
