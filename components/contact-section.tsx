@@ -34,7 +34,10 @@ const CONTACT_METHODS = [
 const styles: Record<string, CSSProperties> = {
   section: {
     position: "relative",
-    padding: "96px 24px",
+    padding: "64px 16px",
+    width: "100%",
+    boxSizing: "border-box" as const,
+    overflowX: "hidden" as const,
   },
   topLine: {
     position: "absolute" as const,
@@ -47,11 +50,13 @@ const styles: Record<string, CSSProperties> = {
   container: {
     maxWidth: "1280px",
     margin: "0 auto",
+    width: "100%",
   },
   grid: {
     display: "grid",
-    gap: "64px",
+    gap: "48px",
     alignItems: "center",
+    width: "100%",
   },
   eyebrow: {
     display: "flex",
@@ -88,10 +93,11 @@ const styles: Record<string, CSSProperties> = {
   },
   description: {
     color: "hsl(0 0% 55%)",
-    fontSize: "18px",
+    fontSize: "16px",
     lineHeight: 1.7,
     maxWidth: "420px",
-    marginBottom: "32px",
+    marginBottom: "24px",
+    width: "100%",
   },
   infoRow: {
     display: "flex",
@@ -107,24 +113,28 @@ const styles: Record<string, CSSProperties> = {
     flexShrink: 0,
   },
   infoText: {
-    fontSize: "14px",
+    fontSize: "13px",
+    wordBreak: "break-word" as const,
   },
   cardsContainer: {
     display: "flex",
     flexDirection: "column" as const,
-    gap: "16px",
+    gap: "12px",
+    width: "100%",
   },
   card: {
     display: "flex",
     alignItems: "center",
-    gap: "20px",
+    gap: "16px",
     borderRadius: "16px",
-    padding: "20px",
+    padding: "16px",
     background: "hsl(0 0% 100% / 0.05)",
     backdropFilter: "blur(16px)",
     border: "1px solid hsl(0 0% 15%)",
     textDecoration: "none",
     transition: "all 0.3s ease",
+    width: "100%",
+    boxSizing: "border-box" as const,
   },
   cardAccent: {
     borderColor: "hsl(200 100% 55% / 0.25)",
@@ -153,6 +163,8 @@ const styles: Record<string, CSSProperties> = {
   },
   cardContent: {
     flex: 1,
+    minWidth: 0,
+    overflow: "hidden" as const,
   },
   cardHeader: {
     display: "flex",
@@ -178,8 +190,11 @@ const styles: Record<string, CSSProperties> = {
   },
   cardValue: {
     color: "hsl(0 0% 95% / 0.7)",
-    fontSize: "14px",
+    fontSize: "12px",
     fontFamily: "'Space Mono', monospace",
+    overflow: "hidden" as const,
+    textOverflow: "ellipsis" as const,
+    whiteSpace: "nowrap" as const,
   },
   cardDescription: {
     color: "hsl(0 0% 55%)",

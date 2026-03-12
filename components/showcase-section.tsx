@@ -9,14 +9,19 @@ import type { Car } from "@/lib/cars-data"
 
 const styles: Record<string, CSSProperties> = {
   section: {
-    padding: "96px 24px",
+    padding: "64px 16px",
+    width: "100%",
+    boxSizing: "border-box" as const,
+    overflowX: "hidden" as const,
   },
   container: {
     maxWidth: "1280px",
     margin: "0 auto",
+    width: "100%",
   },
   header: {
-    marginBottom: "64px",
+    marginBottom: "48px",
+    width: "100%",
   },
   eyebrow: {
     display: "flex",
@@ -53,15 +58,17 @@ const styles: Record<string, CSSProperties> = {
   },
   description: {
     color: "hsl(0 0% 55%)",
-    fontSize: "18px",
+    fontSize: "16px",
     lineHeight: 1.7,
     maxWidth: "560px",
+    width: "100%",
   },
   filterContainer: {
     display: "flex",
     flexWrap: "wrap" as const,
     gap: "8px",
-    marginBottom: "48px",
+    marginBottom: "32px",
+    width: "100%",
   },
   filterBtn: {
     padding: "8px 20px",
@@ -87,8 +94,9 @@ const styles: Record<string, CSSProperties> = {
   },
   grid: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-    gap: "24px",
+    gridTemplateColumns: "repeat(auto-fill, minmax(min(280px, 100%), 1fr))",
+    gap: "20px",
+    width: "100%",
   },
   emptyState: {
     textAlign: "center" as const,
