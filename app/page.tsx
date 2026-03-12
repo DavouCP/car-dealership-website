@@ -7,7 +7,7 @@ import FloatingWhatsApp from "@/components/floating-whatsapp"
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen">
+    <main style={{ minHeight: "100vh" }}>
       <Navbar />
       <HeroSection />
       <ShowcaseSection />

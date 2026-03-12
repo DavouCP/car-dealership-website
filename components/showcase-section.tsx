@@ -1,11 +1,103 @@
 "use client"
 
-import { useState } from "react"
+import { useState, CSSProperties } from "react"
 import { motion } from "framer-motion"
 import CarCard from "@/components/car-card"
 import InquireModal from "@/components/inquire-modal"
 import { CARS, CATEGORIES } from "@/lib/cars-data"
 import type { Car } from "@/lib/cars-data"
+
+const styles: Record<string, CSSProperties> = {
+  section: {
+    padding: "96px 24px",
+  },
+  container: {
+    maxWidth: "1280px",
+    margin: "0 auto",
+  },
+  header: {
+    marginBottom: "64px",
+  },
+  eyebrow: {
+    display: "flex",
+    alignItems: "center",
+    gap: "12px",
+    marginBottom: "16px",
+  },
+  eyebrowLine: {
+    height: "1px",
+    width: "48px",
+    background: "hsl(200 100% 55%)",
+  },
+  eyebrowText: {
+    color: "hsl(200 100% 55%)",
+    fontFamily: "'Space Mono', monospace",
+    fontSize: "12px",
+    letterSpacing: "0.3em",
+    textTransform: "uppercase" as const,
+  },
+  headline: {
+    fontSize: "clamp(32px, 5vw, 60px)",
+    fontFamily: "Inter, sans-serif",
+    fontWeight: 900,
+    lineHeight: 1,
+    letterSpacing: "-0.02em",
+    marginBottom: "24px",
+    color: "hsl(0 0% 95%)",
+  },
+  gradientText: {
+    background: "linear-gradient(135deg, hsl(0 0% 95%) 0%, hsl(200 100% 55%) 100%)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    backgroundClip: "text",
+  },
+  description: {
+    color: "hsl(0 0% 55%)",
+    fontSize: "18px",
+    lineHeight: 1.7,
+    maxWidth: "560px",
+  },
+  filterContainer: {
+    display: "flex",
+    flexWrap: "wrap" as const,
+    gap: "8px",
+    marginBottom: "48px",
+  },
+  filterBtn: {
+    padding: "8px 20px",
+    borderRadius: "9999px",
+    fontFamily: "'Space Mono', monospace",
+    fontSize: "12px",
+    letterSpacing: "0.2em",
+    textTransform: "uppercase" as const,
+    transition: "all 0.3s ease",
+    cursor: "pointer",
+  },
+  filterBtnActive: {
+    background: "hsl(200 100% 55%)",
+    color: "hsl(0 0% 4%)",
+    border: "1px solid hsl(200 100% 55%)",
+    boxShadow: "0 0 20px hsl(200 100% 55% / 0.3)",
+  },
+  filterBtnInactive: {
+    background: "hsl(0 0% 100% / 0.05)",
+    backdropFilter: "blur(16px)",
+    color: "hsl(0 0% 55%)",
+    border: "1px solid hsl(0 0% 15%)",
+  },
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+    gap: "24px",
+  },
+  emptyState: {
+    textAlign: "center" as const,
+    padding: "80px 0",
+    color: "hsl(0 0% 55%)",
+    fontFamily: "'Space Mono', monospace",
+    fontSize: "14px",
+  },
+}
 
 export default function ShowcaseSection() {
   const [activeCategory, setActiveCategory] = useState<string>("All")
@@ -17,19 +109,18 @@ export default function ShowcaseSection() {
 
   return (
     <>
-      <section id="showcase" className="py-24 px-6">
-        <div className="max-w-7xl mx-auto">
-          {/* Section Header */}
-          <div className="mb-16">
+      <section id="showcase" style={styles.section}>
+        <div style={styles.container}>
+          <div style={styles.header}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="flex items-center gap-3 mb-4"
+              style={styles.eyebrow}
             >
-              <div className="h-px w-12 bg-accent" />
-              <span className="text-accent font-mono text-xs tracking-[0.3em] uppercase">Our Collection</span>
+              <div style={styles.eyebrowLine} />
+              <span style={styles.eyebrowText}>Our Collection</span>
             </motion.div>
 
             <motion.h2
@@ -37,10 +128,9 @@ export default function ShowcaseSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.1 }}
-              className="text-4xl md:text-6xl font-black font-sans leading-none tracking-tight text-balance mb-6"
+              style={styles.headline}
             >
-              Curated for the{" "}
-              <span className="text-gradient">Extraordinary</span>
+              Curated for the <span style={styles.gradientText}>Extraordinary</span>
             </motion.h2>
 
             <motion.p
@@ -48,40 +138,46 @@ export default function ShowcaseSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.2 }}
-              className="text-muted-foreground text-lg leading-relaxed max-w-xl text-pretty"
+              style={styles.description}
             >
               Every vehicle in our showroom is handpicked for its engineering excellence, design mastery, and driving thrill.
             </motion.p>
           </div>
 
-          {/* Category Filter */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.25 }}
-            className="flex flex-wrap gap-2 mb-12"
+            style={styles.filterContainer}
           >
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-5 py-2 rounded-full font-mono text-xs tracking-widest uppercase transition-all duration-300 border ${
-                  activeCategory === cat
-                    ? "bg-accent text-accent-foreground border-accent shadow-[0_0_20px_hsl(var(--accent)/0.3)]"
-                    : "glass-panel text-muted-foreground border-border hover:border-accent/40 hover:text-foreground"
-                }`}
+                style={{
+                  ...styles.filterBtn,
+                  ...(activeCategory === cat ? styles.filterBtnActive : styles.filterBtnInactive),
+                }}
+                onMouseEnter={(e) => {
+                  if (activeCategory !== cat) {
+                    e.currentTarget.style.borderColor = "hsl(200 100% 55% / 0.4)"
+                    e.currentTarget.style.color = "hsl(0 0% 95%)"
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (activeCategory !== cat) {
+                    e.currentTarget.style.borderColor = "hsl(0 0% 15%)"
+                    e.currentTarget.style.color = "hsl(0 0% 55%)"
+                  }
+                }}
               >
                 {cat}
               </button>
             ))}
           </motion.div>
 
-          {/* Cars Grid */}
-          <motion.div
-            layout
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-          >
+          <motion.div layout style={styles.grid}>
             {filtered.map((car, i) => (
               <CarCard
                 key={car.id}
@@ -92,12 +188,11 @@ export default function ShowcaseSection() {
             ))}
           </motion.div>
 
-          {/* Empty State */}
           {filtered.length === 0 && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-center py-20 text-muted-foreground font-mono text-sm"
+              style={styles.emptyState}
             >
               No vehicles in this category currently available.
             </motion.div>

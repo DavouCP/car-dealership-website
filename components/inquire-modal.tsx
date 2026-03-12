@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { CSSProperties } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, Phone, MessageCircle, Mail, ArrowUpRight } from "lucide-react"
 import type { Car } from "@/lib/cars-data"
@@ -8,6 +8,135 @@ import type { Car } from "@/lib/cars-data"
 interface InquireModalProps {
   car: Car | null
   onClose: () => void
+}
+
+const styles: Record<string, CSSProperties> = {
+  backdrop: {
+    position: "fixed" as const,
+    inset: 0,
+    zIndex: 50,
+    background: "hsl(0 0% 4% / 0.8)",
+    backdropFilter: "blur(8px)",
+  },
+  modalContainer: {
+    position: "fixed" as const,
+    inset: 0,
+    zIndex: 50,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "16px",
+    pointerEvents: "none" as const,
+  },
+  modal: {
+    background: "hsl(0 0% 100% / 0.08)",
+    backdropFilter: "blur(24px)",
+    WebkitBackdropFilter: "blur(24px)",
+    border: "1px solid hsl(200 100% 55% / 0.2)",
+    borderRadius: "24px",
+    padding: "32px",
+    width: "100%",
+    maxWidth: "420px",
+    pointerEvents: "auto" as const,
+  },
+  header: {
+    display: "flex",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    marginBottom: "24px",
+  },
+  brand: {
+    color: "hsl(0 0% 55%)",
+    fontFamily: "'Space Mono', monospace",
+    fontSize: "12px",
+    letterSpacing: "0.2em",
+    textTransform: "uppercase" as const,
+    marginBottom: "4px",
+  },
+  model: {
+    color: "hsl(0 0% 95%)",
+    fontWeight: 900,
+    fontSize: "24px",
+  },
+  price: {
+    color: "hsl(200 100% 55%)",
+    fontWeight: 900,
+    fontSize: "30px",
+    marginTop: "4px",
+  },
+  closeBtn: {
+    background: "hsl(0 0% 100% / 0.05)",
+    backdropFilter: "blur(16px)",
+    borderRadius: "50%",
+    padding: "8px",
+    border: "1px solid hsl(0 0% 15%)",
+    color: "hsl(0 0% 55%)",
+    cursor: "pointer",
+    transition: "all 0.2s ease",
+  },
+  description: {
+    color: "hsl(0 0% 55%)",
+    fontSize: "14px",
+    lineHeight: 1.7,
+    marginBottom: "24px",
+  },
+  contactList: {
+    display: "flex",
+    flexDirection: "column" as const,
+    gap: "12px",
+  },
+  contactCard: {
+    display: "flex",
+    alignItems: "center",
+    gap: "16px",
+    background: "hsl(0 0% 100% / 0.05)",
+    backdropFilter: "blur(16px)",
+    borderRadius: "16px",
+    padding: "16px",
+    border: "1px solid hsl(0 0% 15%)",
+    textDecoration: "none",
+    transition: "all 0.3s ease",
+  },
+  contactIconBox: {
+    width: "40px",
+    height: "40px",
+    borderRadius: "12px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexShrink: 0,
+    transition: "all 0.3s ease",
+  },
+  contactIconBoxAccent: {
+    background: "hsl(200 100% 55% / 0.1)",
+    border: "1px solid hsl(200 100% 55% / 0.2)",
+  },
+  contactIconBoxDefault: {
+    background: "hsl(0 0% 12%)",
+    border: "1px solid hsl(0 0% 15%)",
+  },
+  contactIcon: {
+    width: "20px",
+    height: "20px",
+  },
+  contactContent: {
+    flex: 1,
+  },
+  contactLabel: {
+    color: "hsl(0 0% 95%)",
+    fontWeight: 600,
+    fontSize: "14px",
+  },
+  contactValue: {
+    color: "hsl(0 0% 55%)",
+    fontSize: "12px",
+  },
+  arrowIcon: {
+    width: "16px",
+    height: "16px",
+    color: "hsl(0 0% 55%)",
+    transition: "color 0.3s ease",
+  },
 }
 
 export default function InquireModal({ car, onClose }: InquireModalProps) {
@@ -23,94 +152,115 @@ export default function InquireModal({ car, onClose }: InquireModalProps) {
     `Hello,\n\nI'm interested in the ${car.year} ${car.brand} ${car.model} listed at ${car.price}.\n\nPlease provide more details.\n\nThank you.`
   )
 
+  const contacts = [
+    {
+      icon: MessageCircle,
+      label: "WhatsApp",
+      value: "+1 (234) 567-890",
+      href: `https://wa.me/+1234567890?text=${whatsappMessage}`,
+      accent: true,
+    },
+    {
+      icon: Phone,
+      label: "Phone Call",
+      value: "+1 (234) 567-890",
+      href: "tel:+1234567890",
+      accent: false,
+    },
+    {
+      icon: Mail,
+      label: "Email",
+      value: "info@autolux.com",
+      href: `mailto:info@autolux.com?subject=${emailSubject}&body=${emailBody}`,
+      accent: false,
+    },
+  ]
+
   return (
     <AnimatePresence>
       {car && (
         <>
-          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-50 bg-background/80 backdrop-blur-md"
+            style={styles.backdrop}
             onClick={onClose}
           />
 
-          {/* Modal */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.35, ease: "easeOut" }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
+            style={styles.modalContainer}
           >
-            <div className="glass-panel-strong rounded-3xl p-8 w-full max-w-md pointer-events-auto border border-accent/20">
-              {/* Close */}
-              <div className="flex items-start justify-between mb-6">
+            <div style={styles.modal}>
+              <div style={styles.header}>
                 <div>
-                  <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase mb-1">{car.brand} · {car.year}</p>
-                  <h2 className="text-foreground font-black text-2xl">{car.model}</h2>
-                  <p className="text-accent font-black text-3xl mt-1">{car.price}</p>
+                  <p style={styles.brand}>{car.brand} · {car.year}</p>
+                  <h2 style={styles.model}>{car.model}</h2>
+                  <p style={styles.price}>{car.price}</p>
                 </div>
                 <button
                   onClick={onClose}
-                  className="glass-panel rounded-full p-2 text-muted-foreground hover:text-foreground hover:border-border transition-colors duration-200"
+                  style={styles.closeBtn}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = "hsl(0 0% 95%)"
+                    e.currentTarget.style.borderColor = "hsl(0 0% 25%)"
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = "hsl(0 0% 55%)"
+                    e.currentTarget.style.borderColor = "hsl(0 0% 15%)"
+                  }}
                   aria-label="Close modal"
                 >
-                  <X className="w-5 h-5" />
+                  <X style={{ width: "20px", height: "20px" }} />
                 </button>
               </div>
 
-              <p className="text-muted-foreground text-sm leading-relaxed mb-6">
+              <p style={styles.description}>
                 Interested in this vehicle? Reach out to us through any of the channels below and our team will get back to you promptly.
               </p>
 
-              {/* Contact Options */}
-              <div className="flex flex-col gap-3">
-                <a
-                  href={`https://wa.me/+1234567890?text=${whatsappMessage}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex items-center gap-4 glass-panel rounded-2xl p-4 border border-border hover:border-accent/40 hover:bg-accent/5 transition-all duration-300"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0 group-hover:bg-accent/20 transition-colors">
-                    <MessageCircle className="w-5 h-5 text-accent" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-foreground font-semibold text-sm">WhatsApp</p>
-                    <p className="text-muted-foreground text-xs">+1 (234) 567-890</p>
-                  </div>
-                  <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors" />
-                </a>
-
-                <a
-                  href="tel:+1234567890"
-                  className="group flex items-center gap-4 glass-panel rounded-2xl p-4 border border-border hover:border-accent/40 hover:bg-accent/5 transition-all duration-300"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-muted border border-border flex items-center justify-center flex-shrink-0 group-hover:bg-accent/20 group-hover:border-accent/20 transition-colors">
-                    <Phone className="w-5 h-5 text-muted-foreground group-hover:text-accent transition-colors" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-foreground font-semibold text-sm">Phone Call</p>
-                    <p className="text-muted-foreground text-xs">+1 (234) 567-890</p>
-                  </div>
-                  <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors" />
-                </a>
-
-                <a
-                  href={`mailto:info@autolux.com?subject=${emailSubject}&body=${emailBody}`}
-                  className="group flex items-center gap-4 glass-panel rounded-2xl p-4 border border-border hover:border-accent/40 hover:bg-accent/5 transition-all duration-300"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-muted border border-border flex items-center justify-center flex-shrink-0 group-hover:bg-accent/20 group-hover:border-accent/20 transition-colors">
-                    <Mail className="w-5 h-5 text-muted-foreground group-hover:text-accent transition-colors" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-foreground font-semibold text-sm">Email</p>
-                    <p className="text-muted-foreground text-xs">info@autolux.com</p>
-                  </div>
-                  <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors" />
-                </a>
+              <div style={styles.contactList}>
+                {contacts.map((contact) => (
+                  <a
+                    key={contact.label}
+                    href={contact.href}
+                    target={contact.href.startsWith("http") ? "_blank" : undefined}
+                    rel={contact.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                    style={styles.contactCard}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = "hsl(200 100% 55% / 0.4)"
+                      e.currentTarget.style.background = "hsl(200 100% 55% / 0.05)"
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = "hsl(0 0% 15%)"
+                      e.currentTarget.style.background = "hsl(0 0% 100% / 0.05)"
+                    }}
+                  >
+                    <div
+                      style={{
+                        ...styles.contactIconBox,
+                        ...(contact.accent ? styles.contactIconBoxAccent : styles.contactIconBoxDefault),
+                      }}
+                    >
+                      <contact.icon
+                        style={{
+                          ...styles.contactIcon,
+                          color: contact.accent ? "hsl(200 100% 55%)" : "hsl(0 0% 55%)",
+                        }}
+                      />
+                    </div>
+                    <div style={styles.contactContent}>
+                      <p style={styles.contactLabel}>{contact.label}</p>
+                      <p style={styles.contactValue}>{contact.value}</p>
+                    </div>
+                    <ArrowUpRight style={styles.arrowIcon} />
+                  </a>
+                ))}
               </div>
             </div>
           </motion.div>

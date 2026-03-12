@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { CSSProperties } from "react"
 import { motion } from "framer-motion"
 import Image from "next/image"
 import { ChevronDown } from "lucide-react"
@@ -11,84 +11,247 @@ const STAT_ITEMS = [
   { value: "8K+", label: "Happy Clients" },
 ]
 
+const styles: Record<string, CSSProperties> = {
+  section: {
+    position: "relative",
+    minHeight: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    overflow: "hidden",
+  },
+  bgContainer: {
+    position: "absolute",
+    inset: 0,
+  },
+  overlay1: {
+    position: "absolute",
+    inset: 0,
+    background: "hsl(0 0% 4% / 0.6)",
+  },
+  overlay2: {
+    position: "absolute",
+    inset: 0,
+    background: "linear-gradient(to bottom, hsl(0 0% 4% / 0.8), transparent, hsl(0 0% 4%))",
+  },
+  overlay3: {
+    position: "absolute",
+    inset: 0,
+    background: "linear-gradient(to right, hsl(0 0% 4% / 0.7), transparent, transparent)",
+  },
+  accentLine: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: "1px",
+    background: "linear-gradient(to right, transparent, hsl(200 100% 55% / 0.4), transparent)",
+  },
+  content: {
+    position: "relative",
+    zIndex: 10,
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    maxWidth: "1280px",
+    margin: "0 auto",
+    padding: "128px 24px 96px",
+    width: "100%",
+  },
+  innerContent: {
+    maxWidth: "768px",
+  },
+  eyebrow: {
+    display: "flex",
+    alignItems: "center",
+    gap: "12px",
+    marginBottom: "24px",
+  },
+  eyebrowLine: {
+    height: "1px",
+    width: "48px",
+    background: "hsl(200 100% 55%)",
+  },
+  eyebrowText: {
+    color: "hsl(200 100% 55%)",
+    fontFamily: "'Space Mono', monospace",
+    fontSize: "12px",
+    letterSpacing: "0.3em",
+    textTransform: "uppercase" as const,
+  },
+  headline: {
+    fontSize: "clamp(48px, 8vw, 96px)",
+    fontFamily: "Inter, sans-serif",
+    fontWeight: 900,
+    lineHeight: 1,
+    letterSpacing: "-0.02em",
+    marginBottom: "24px",
+    color: "hsl(0 0% 95%)",
+  },
+  gradientText: {
+    background: "linear-gradient(135deg, hsl(0 0% 95%) 0%, hsl(200 100% 55%) 100%)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    backgroundClip: "text",
+  },
+  subheadline: {
+    color: "hsl(0 0% 55%)",
+    fontSize: "18px",
+    lineHeight: 1.7,
+    maxWidth: "560px",
+    marginBottom: "40px",
+  },
+  ctaContainer: {
+    display: "flex",
+    flexWrap: "wrap" as const,
+    gap: "16px",
+  },
+  primaryBtn: {
+    position: "relative" as const,
+    padding: "16px 32px",
+    background: "hsl(200 100% 55%)",
+    color: "hsl(0 0% 4%)",
+    fontFamily: "'Space Mono', monospace",
+    fontSize: "14px",
+    letterSpacing: "0.2em",
+    textTransform: "uppercase" as const,
+    borderRadius: "9999px",
+    fontWeight: 700,
+    border: "none",
+    cursor: "pointer",
+    overflow: "hidden",
+    transition: "all 0.3s ease",
+  },
+  secondaryBtn: {
+    padding: "16px 32px",
+    background: "hsl(0 0% 100% / 0.05)",
+    backdropFilter: "blur(16px)",
+    color: "hsl(0 0% 95%)",
+    fontFamily: "'Space Mono', monospace",
+    fontSize: "14px",
+    letterSpacing: "0.2em",
+    textTransform: "uppercase" as const,
+    borderRadius: "9999px",
+    border: "1px solid hsl(0 0% 95% / 0.1)",
+    cursor: "pointer",
+    transition: "all 0.3s ease",
+    textDecoration: "none",
+  },
+  statsRow: {
+    marginTop: "64px",
+    display: "flex",
+    flexWrap: "wrap" as const,
+    gap: "32px",
+  },
+  statItem: {
+    display: "flex",
+    flexDirection: "column" as const,
+    gap: "4px",
+  },
+  statValue: {
+    fontSize: "30px",
+    fontWeight: 900,
+    fontFamily: "Inter, sans-serif",
+    color: "hsl(200 100% 60%)",
+    textShadow: "0 0 20px hsl(200 100% 60% / 0.5)",
+  },
+  statLabel: {
+    color: "hsl(0 0% 55%)",
+    fontFamily: "'Space Mono', monospace",
+    fontSize: "12px",
+    letterSpacing: "0.2em",
+    textTransform: "uppercase" as const,
+  },
+  scrollIndicator: {
+    position: "relative" as const,
+    zIndex: 10,
+    margin: "0 auto 32px",
+    display: "flex",
+    flexDirection: "column" as const,
+    alignItems: "center",
+    gap: "8px",
+    color: "hsl(0 0% 55%)",
+    background: "none",
+    border: "none",
+    cursor: "pointer",
+    transition: "color 0.3s ease",
+  },
+  scrollText: {
+    fontFamily: "'Space Mono', monospace",
+    fontSize: "12px",
+    letterSpacing: "0.2em",
+    textTransform: "uppercase" as const,
+  },
+}
+
 export default function HeroSection() {
   const scrollToShowcase = () => {
     document.getElementById("showcase")?.scrollIntoView({ behavior: "smooth" })
   }
 
   return (
-    <section className="relative min-h-screen flex flex-col overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0">
+    <section style={styles.section}>
+      <div style={styles.bgContainer}>
         <Image
           src="/images/hero-car.jpg"
           alt="Luxury car at night"
           fill
           priority
-          className="object-cover object-center"
+          style={{ objectFit: "cover", objectPosition: "center" }}
         />
-        {/* Dark overlay layers */}
-        <div className="absolute inset-0 bg-background/60" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-transparent to-background" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/70 via-transparent to-transparent" />
+        <div style={styles.overlay1} />
+        <div style={styles.overlay2} />
+        <div style={styles.overlay3} />
       </div>
 
-      {/* Subtle neon accent lines */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
+      <div style={styles.accentLine} />
 
-      {/* Content */}
-      <div className="relative z-10 flex-1 flex flex-col justify-center max-w-7xl mx-auto px-6 pt-32 pb-24">
-        <div className="max-w-3xl">
-          {/* Eyebrow */}
+      <div style={styles.content}>
+        <div style={styles.innerContent}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex items-center gap-3 mb-6"
+            style={styles.eyebrow}
           >
-            <div className="h-px w-12 bg-accent" />
-            <span className="text-accent font-mono text-xs tracking-[0.3em] uppercase">
-              Premium Car Showcase
-            </span>
+            <div style={styles.eyebrowLine} />
+            <span style={styles.eyebrowText}>Premium Car Showcase</span>
           </motion.div>
 
-          {/* Headline */}
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.35 }}
-            className="text-5xl md:text-7xl lg:text-8xl font-sans font-black leading-none tracking-tight text-balance mb-6"
+            style={styles.headline}
           >
-            Drive the{" "}
-            <span className="text-gradient">Future</span>
+            Drive the <span style={styles.gradientText}>Future</span>
             <br />
             Today.
           </motion.h1>
 
-          {/* Subheadline */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.5 }}
-            className="text-muted-foreground text-lg md:text-xl leading-relaxed max-w-xl mb-10 text-pretty"
+            style={styles.subheadline}
           >
             Discover our exclusive collection of the world&apos;s most prestigious automobiles.
             Every car is curated for performance, luxury, and style.
           </motion.p>
 
-          {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.65 }}
-            className="flex flex-col sm:flex-row gap-4"
+            style={styles.ctaContainer}
           >
             <button
               onClick={scrollToShowcase}
-              className="group relative px-8 py-4 bg-accent text-accent-foreground font-mono text-sm tracking-widest uppercase rounded-full font-bold overflow-hidden transition-all duration-300 hover:shadow-[0_0_30px_hsl(var(--accent)/0.4)]"
+              style={styles.primaryBtn}
+              onMouseEnter={(e) => (e.currentTarget.style.boxShadow = "0 0 30px hsl(200 100% 55% / 0.4)")}
+              onMouseLeave={(e) => (e.currentTarget.style.boxShadow = "none")}
             >
-              <span className="relative z-10">View Collection</span>
-              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+              View Collection
             </button>
 
             <a
@@ -97,47 +260,52 @@ export default function HeroSection() {
                 e.preventDefault()
                 document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })
               }}
-              className="px-8 py-4 glass-panel text-foreground font-mono text-sm tracking-widest uppercase rounded-full border border-foreground/10 hover:border-accent/40 hover:text-accent transition-all duration-300"
+              style={styles.secondaryBtn}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "hsl(200 100% 55% / 0.4)"
+                e.currentTarget.style.color = "hsl(200 100% 55%)"
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "hsl(0 0% 95% / 0.1)"
+                e.currentTarget.style.color = "hsl(0 0% 95%)"
+              }}
             >
               Contact Us
             </a>
           </motion.div>
-        </div>
 
-        {/* Stats Row */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="mt-16 flex flex-wrap gap-8"
-        >
-          {STAT_ITEMS.map((stat, i) => (
-            <div
-              key={stat.label}
-              className="flex flex-col gap-1"
-            >
-              <span className="text-3xl font-black font-sans neon-text">{stat.value}</span>
-              <span className="text-muted-foreground font-mono text-xs tracking-widest uppercase">{stat.label}</span>
-            </div>
-          ))}
-        </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+            style={styles.statsRow}
+          >
+            {STAT_ITEMS.map((stat) => (
+              <div key={stat.label} style={styles.statItem}>
+                <span style={styles.statValue}>{stat.value}</span>
+                <span style={styles.statLabel}>{stat.label}</span>
+              </div>
+            ))}
+          </motion.div>
+        </div>
       </div>
 
-      {/* Scroll indicator */}
       <motion.button
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2, duration: 0.6 }}
         onClick={scrollToShowcase}
-        className="relative z-10 mx-auto mb-8 flex flex-col items-center gap-2 text-muted-foreground hover:text-accent transition-colors duration-300"
+        style={styles.scrollIndicator}
         aria-label="Scroll to showcase"
+        onMouseEnter={(e) => (e.currentTarget.style.color = "hsl(200 100% 55%)")}
+        onMouseLeave={(e) => (e.currentTarget.style.color = "hsl(0 0% 55%)")}
       >
-        <span className="font-mono text-xs tracking-widest uppercase">Explore</span>
+        <span style={styles.scrollText}>Explore</span>
         <motion.div
           animate={{ y: [0, 6, 0] }}
           transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
         >
-          <ChevronDown className="w-5 h-5" />
+          <ChevronDown style={{ width: "20px", height: "20px" }} />
         </motion.div>
       </motion.button>
     </section>

@@ -32,7 +32,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="font-sans antialiased bg-background text-foreground min-h-screen">
+      <body style={{ minHeight: "100vh" }}>
         {children}
       </body>
     </html>

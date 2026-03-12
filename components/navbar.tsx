@@ -1,11 +1,142 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, CSSProperties } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import Image from "next/image"
-import { ChevronDown } from "lucide-react"
 
 const NAV_LINKS = ["Showcase", "About", "Contact"]
+
+const styles: Record<string, CSSProperties> = {
+  header: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 50,
+    transition: "all 0.5s ease",
+  },
+  headerScrolled: {
+    background: "hsl(0 0% 100% / 0.05)",
+    backdropFilter: "blur(16px)",
+    WebkitBackdropFilter: "blur(16px)",
+    borderBottom: "1px solid hsl(0 0% 15%)",
+    padding: "12px 0",
+  },
+  headerNotScrolled: {
+    padding: "20px 0",
+  },
+  container: {
+    maxWidth: "1280px",
+    margin: "0 auto",
+    padding: "0 24px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  logoContainer: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+  },
+  logoCircle: {
+    width: "32px",
+    height: "32px",
+    borderRadius: "50%",
+    border: "1px solid hsl(200 100% 55% / 0.6)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  logoDot: {
+    width: "12px",
+    height: "12px",
+    borderRadius: "50%",
+    background: "hsl(200 100% 55%)",
+  },
+  logoText: {
+    color: "hsl(0 0% 95%)",
+    fontFamily: "'Space Mono', monospace",
+    fontSize: "14px",
+    letterSpacing: "0.2em",
+    textTransform: "uppercase" as const,
+  },
+  nav: {
+    display: "flex",
+    alignItems: "center",
+    gap: "32px",
+  },
+  navLink: {
+    color: "hsl(0 0% 55%)",
+    fontSize: "14px",
+    letterSpacing: "0.15em",
+    textTransform: "uppercase" as const,
+    fontFamily: "'Space Mono', monospace",
+    transition: "color 0.2s ease",
+    background: "none",
+    border: "none",
+    cursor: "pointer",
+  },
+  cta: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    background: "hsl(0 0% 100% / 0.05)",
+    backdropFilter: "blur(16px)",
+    padding: "8px 20px",
+    borderRadius: "9999px",
+    fontSize: "14px",
+    fontFamily: "'Space Mono', monospace",
+    letterSpacing: "0.15em",
+    color: "hsl(200 100% 55%)",
+    border: "1px solid hsl(200 100% 55% / 0.3)",
+    transition: "all 0.3s ease",
+    textDecoration: "none",
+  },
+  mobileMenu: {
+    position: "fixed" as const,
+    top: "64px",
+    left: "16px",
+    right: "16px",
+    zIndex: 40,
+    background: "hsl(0 0% 100% / 0.08)",
+    backdropFilter: "blur(24px)",
+    WebkitBackdropFilter: "blur(24px)",
+    border: "1px solid hsl(0 0% 100% / 0.12)",
+    borderRadius: "16px",
+    padding: "24px",
+  },
+  mobileNav: {
+    display: "flex",
+    flexDirection: "column" as const,
+    gap: "16px",
+  },
+  mobileLink: {
+    textAlign: "left" as const,
+    color: "hsl(0 0% 95% / 0.8)",
+    fontSize: "18px",
+    fontFamily: "'Space Mono', monospace",
+    letterSpacing: "0.15em",
+    textTransform: "uppercase" as const,
+    background: "none",
+    border: "none",
+    cursor: "pointer",
+    transition: "color 0.2s ease",
+  },
+  burger: {
+    color: "hsl(0 0% 55%)",
+    background: "none",
+    border: "none",
+    cursor: "pointer",
+    padding: "8px",
+  },
+  burgerLine: {
+    display: "block",
+    height: "1px",
+    background: "currentColor",
+    marginBottom: "6px",
+    width: "24px",
+    transition: "all 0.3s ease",
+  },
+}
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -28,60 +159,56 @@ export default function Navbar() {
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled ? "glass-panel py-3" : "py-5"
-        }`}
+        style={{
+          ...styles.header,
+          ...(scrolled ? styles.headerScrolled : styles.headerNotScrolled),
+        }}
       >
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          {/* Logo */}
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full border border-accent/60 flex items-center justify-center">
-              <div className="w-3 h-3 rounded-full bg-accent" />
+        <div style={styles.container}>
+          <div style={styles.logoContainer}>
+            <div style={styles.logoCircle}>
+              <div style={styles.logoDot} />
             </div>
-            <span className="text-foreground font-mono text-sm tracking-widest uppercase">
-              AutoLux
-            </span>
+            <span style={styles.logoText}>AutoLux</span>
           </div>
 
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav style={{ ...styles.nav, display: "none" }} className="desktop-nav">
             {NAV_LINKS.map((link) => (
               <button
                 key={link}
                 onClick={() => scrollTo(link)}
-                className="text-muted-foreground hover:text-foreground text-sm tracking-wider uppercase font-mono transition-colors duration-200"
+                style={styles.navLink}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "hsl(0 0% 95%)")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "hsl(0 0% 55%)")}
               >
                 {link}
               </button>
             ))}
           </nav>
 
-          {/* CTA */}
           <a
             href="https://wa.me/+1234567890"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden md:flex items-center gap-2 glass-panel px-5 py-2 rounded-full text-sm font-mono tracking-wider text-accent border border-accent/30 hover:border-accent/60 hover:bg-accent/10 transition-all duration-300"
+            style={{ ...styles.cta, display: "none" }}
+            className="desktop-cta"
           >
             Inquire Now
           </a>
 
-          {/* Mobile burger */}
           <button
-            className="md:hidden text-muted-foreground hover:text-foreground"
+            style={styles.burger}
             onClick={() => setMenuOpen((v) => !v)}
             aria-label="Toggle menu"
+            className="mobile-burger"
           >
-            <div className="flex flex-col gap-1.5 w-6">
-              <span className={`h-px bg-current transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""}`} />
-              <span className={`h-px bg-current transition-all duration-300 ${menuOpen ? "opacity-0" : ""}`} />
-              <span className={`h-px bg-current transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
-            </div>
+            <span style={{ ...styles.burgerLine, transform: menuOpen ? "rotate(45deg) translateY(7px)" : "none" }} />
+            <span style={{ ...styles.burgerLine, opacity: menuOpen ? 0 : 1 }} />
+            <span style={{ ...styles.burgerLine, marginBottom: 0, transform: menuOpen ? "rotate(-45deg) translateY(-7px)" : "none" }} />
           </button>
         </div>
       </motion.header>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
@@ -89,14 +216,15 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="fixed top-16 left-4 right-4 z-40 glass-panel-strong rounded-2xl p-6 md:hidden"
+            style={styles.mobileMenu}
+            className="mobile-menu"
           >
-            <nav className="flex flex-col gap-4">
+            <nav style={styles.mobileNav}>
               {NAV_LINKS.map((link) => (
                 <button
                   key={link}
                   onClick={() => scrollTo(link)}
-                  className="text-left text-foreground/80 hover:text-accent text-lg font-mono tracking-wider uppercase transition-colors duration-200"
+                  style={styles.mobileLink}
                 >
                   {link}
                 </button>
@@ -105,7 +233,7 @@ export default function Navbar() {
                 href="https://wa.me/+1234567890"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-2 text-center glass-panel px-5 py-3 rounded-full text-sm font-mono tracking-wider text-accent border border-accent/30"
+                style={{ ...styles.cta, marginTop: "8px", justifyContent: "center" }}
               >
                 Inquire Now
               </a>
@@ -113,6 +241,20 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <style jsx global>{`
+        @media (min-width: 768px) {
+          .desktop-nav { display: flex !important; }
+          .desktop-cta { display: flex !important; }
+          .mobile-burger { display: none !important; }
+          .mobile-menu { display: none !important; }
+        }
+        @media (max-width: 767px) {
+          .desktop-nav { display: none !important; }
+          .desktop-cta { display: none !important; }
+          .mobile-burger { display: block !important; }
+        }
+      `}</style>
     </>
   )
 }
