@@ -1,108 +1,91 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme inline {
-  --color-background: hsl(0 0% 4%);
-  --color-foreground: hsl(0 0% 95%);
-  --color-card: hsl(0 0% 7%);
-  --color-card-foreground: hsl(0 0% 95%);
-  --color-muted: hsl(0 0% 12%);
-  --color-muted-foreground: hsl(0 0% 55%);
-  --color-accent: hsl(200 100% 55%);
-  --color-accent-foreground: hsl(0 0% 4%);
-  --color-border: hsl(0 0% 15%);
-  --color-glass: hsl(0 0% 100% / 0.05);
-  --color-neon: hsl(200 100% 60%);
-  --radius: 1rem;
-  
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Space Mono", ui-monospace, monospace;
-
-  --animate-fade-in: fadeIn 0.8s ease forwards;
-  --animate-slide-up: slideUp 0.8s ease forwards;
-  --animate-glow-pulse: glowPulse 3s ease-in-out infinite;
-
-  @keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
+@layer base {
+  :root {
+    --background: 0 0% 4%;
+    --foreground: 0 0% 95%;
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 95%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 55%;
+    --accent: 200 100% 55%;
+    --accent-foreground: 0 0% 4%;
+    --border: 0 0% 15%;
+    --glass: 0 0% 100% / 0.05;
+    --neon: 200 100% 60%;
+    --radius: 1rem;
   }
 
-  @keyframes slideUp {
-    0% { opacity: 0; transform: translateY(30px); }
-    100% { opacity: 1; transform: translateY(0); }
+  * {
+    @apply border-border;
+    box-sizing: border-box;
   }
 
-  @keyframes glowPulse {
-    0%, 100% { box-shadow: 0 0 20px hsl(200 100% 60% / 0.3); }
-    50% { box-shadow: 0 0 40px hsl(200 100% 60% / 0.6); }
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: hsl(var(--accent) / 0.3);
+    color: hsl(var(--foreground));
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--accent) / 0.6);
   }
 }
 
-* {
-  border-color: var(--color-border);
-  box-sizing: border-box;
-}
+@layer utilities {
+  .glass-panel {
+    background: hsl(var(--glass));
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid hsl(var(--border));
+  }
 
-html {
-  scroll-behavior: smooth;
-}
+  .glass-panel-strong {
+    background: hsl(0 0% 100% / 0.08);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid hsl(0 0% 100% / 0.12);
+  }
 
-body {
-  background-color: var(--color-background);
-  color: var(--color-foreground);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+  .neon-text {
+    color: hsl(var(--neon));
+    text-shadow: 0 0 20px hsl(var(--neon) / 0.5);
+  }
 
-::selection {
-  background: hsl(200 100% 55% / 0.3);
-  color: var(--color-foreground);
-}
+  .neon-border {
+    border-color: hsl(var(--neon) / 0.5);
+    box-shadow: 0 0 20px hsl(var(--neon) / 0.15), inset 0 0 20px hsl(var(--neon) / 0.05);
+  }
 
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-background);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--color-border);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: hsl(200 100% 55% / 0.6);
-}
-
-@utility glass-panel {
-  background: var(--color-glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--color-border);
-}
-
-@utility glass-panel-strong {
-  background: hsl(0 0% 100% / 0.08);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid hsl(0 0% 100% / 0.12);
-}
-
-@utility neon-text {
-  color: var(--color-neon);
-  text-shadow: 0 0 20px hsl(200 100% 60% / 0.5);
-}
-
-@utility neon-border {
-  border-color: hsl(200 100% 60% / 0.5);
-  box-shadow: 0 0 20px hsl(200 100% 60% / 0.15), inset 0 0 20px hsl(200 100% 60% / 0.05);
-}
-
-@utility text-gradient {
-  background: linear-gradient(135deg, var(--color-foreground) 0%, var(--color-accent) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  .text-gradient {
+    background: linear-gradient(135deg, hsl(var(--foreground)) 0%, hsl(var(--accent)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 }
