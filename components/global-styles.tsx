@@ -20,6 +20,11 @@ export function GlobalStyles() {
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         line-height: 1.6;
+        overflow-x: hidden;
+      }
+      
+      html {
+        overflow-x: hidden;
       }
       
       ::selection {

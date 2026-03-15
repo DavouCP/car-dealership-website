@@ -27,10 +27,12 @@ const styles: Record<string, CSSProperties> = {
   container: {
     maxWidth: "1280px",
     margin: "0 auto",
-    padding: "0 24px",
+    padding: "0 16px",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
+    width: "100%",
+    boxSizing: "border-box" as const,
   },
   logoContainer: {
     display: "flex",
@@ -94,15 +96,16 @@ const styles: Record<string, CSSProperties> = {
   mobileMenu: {
     position: "fixed" as const,
     top: "64px",
-    left: "16px",
-    right: "16px",
+    left: "12px",
+    right: "12px",
     zIndex: 40,
     background: "hsl(0 0% 100% / 0.08)",
     backdropFilter: "blur(24px)",
     WebkitBackdropFilter: "blur(24px)",
     border: "1px solid hsl(0 0% 100% / 0.12)",
     borderRadius: "16px",
-    padding: "24px",
+    padding: "20px",
+    boxSizing: "border-box" as const,
   },
   mobileNav: {
     display: "flex",

@@ -9,7 +9,7 @@ import EmailSignupPopup from "@/components/email-signup-popup"
 
 export default function HomePage() {
   return (
-    <main style={{ minHeight: "100vh" }}>
+    <main style={{ minHeight: "100vh", overflowX: "hidden", width: "100%" }}>
       <Navbar />
       <HeroSection />
       <ShowcaseSection />
