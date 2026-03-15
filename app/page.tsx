@@ -4,6 +4,8 @@ import ShowcaseSection from "@/components/showcase-section"
 import ContactSection from "@/components/contact-section"
 import Footer from "@/components/footer"
 import FloatingWhatsApp from "@/components/floating-whatsapp"
+import CookieBanner from "@/components/cookie-banner"
+import EmailSignupPopup from "@/components/email-signup-popup"
 
 export default function HomePage() {
   return (
@@ -14,6 +16,8 @@ export default function HomePage() {
       <ContactSection />
       <Footer />
       <FloatingWhatsApp />
+      <CookieBanner />
+      <EmailSignupPopup />
     </main>
   )
 }
