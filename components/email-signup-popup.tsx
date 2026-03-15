@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, type MouseEvent, type FormEvent, type ChangeEvent } from "react"
+import { useState, useEffect, type MouseEvent, type FormEvent, type ChangeEvent, type FocusEvent } from "react"
 
 export default function EmailSignupPopup(): JSX.Element | null {
   const [visible, setVisible] = useState<boolean>(false)
@@ -104,12 +104,12 @@ export default function EmailSignupPopup(): JSX.Element | null {
             fontFamily: "inherit",
             transition: "all 0.2s ease",
           }}
-          onMouseEnter={e => {
+          onMouseEnter={(e: MouseEvent<HTMLButtonElement>) => {
             const el = e.currentTarget
             el.style.color = "#f5f5f5"
             el.style.borderColor = "rgba(255,255,255,0.25)"
           }}
-          onMouseLeave={e => {
+          onMouseLeave={(e: MouseEvent<HTMLButtonElement>) => {
             const el = e.currentTarget
             el.style.color = "#666"
             el.style.borderColor = "rgba(255,255,255,0.1)"
@@ -247,10 +247,10 @@ export default function EmailSignupPopup(): JSX.Element | null {
                     outline: "none",
                     transition: "border-color 0.2s ease",
                   }}
-                  onFocus={e => {
+                  onFocus={(e: FocusEvent<HTMLInputElement>) => {
                     if (!error) e.currentTarget.style.borderColor = "rgba(0,191,255,0.4)"
                   }}
-                  onBlur={e => {
+                  onBlur={(e: FocusEvent<HTMLInputElement>) => {
                     if (!error) e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)"
                   }}
                 />
@@ -271,13 +271,13 @@ export default function EmailSignupPopup(): JSX.Element | null {
                     transition: "all 0.2s ease",
                     opacity: loading ? 0.7 : 1,
                   }}
-                  onMouseEnter={e => {
+                  onMouseEnter={(e: MouseEvent<HTMLButtonElement>) => {
                     if (!loading) {
                       e.currentTarget.style.background = "rgba(0,191,255,0.28)"
                       e.currentTarget.style.borderColor = "rgba(0,191,255,0.8)"
                     }
                   }}
-                  onMouseLeave={e => {
+                  onMouseLeave={(e: MouseEvent<HTMLButtonElement>) => {
                     if (!loading) {
                       e.currentTarget.style.background = "rgba(0,191,255,0.18)"
                       e.currentTarget.style.borderColor = "rgba(0,191,255,0.5)"
