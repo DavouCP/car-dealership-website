@@ -1,9 +1,9 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, type CSSProperties, type MouseEvent } from "react"
 
-export default function CookieBanner() {
-  const [visible, setVisible] = useState(false)
+export default function CookieBanner(): JSX.Element | null {
+  const [visible, setVisible] = useState<boolean>(false)
 
   useEffect(() => {
     const consent = localStorage.getItem("autolux_cookie_consent")
@@ -115,12 +115,12 @@ export default function CookieBanner() {
               fontFamily: "inherit",
               transition: "all 0.2s ease",
             }}
-            onMouseEnter={e => {
+            onMouseEnter={(e: MouseEvent<HTMLButtonElement>) => {
               const el = e.currentTarget
               el.style.borderColor = "rgba(255,255,255,0.3)"
               el.style.color = "#f5f5f5"
             }}
-            onMouseLeave={e => {
+            onMouseLeave={(e: MouseEvent<HTMLButtonElement>) => {
               const el = e.currentTarget
               el.style.borderColor = "rgba(255,255,255,0.15)"
               el.style.color = "#999"
@@ -142,12 +142,12 @@ export default function CookieBanner() {
               fontFamily: "inherit",
               transition: "all 0.2s ease",
             }}
-            onMouseEnter={e => {
+            onMouseEnter={(e: MouseEvent<HTMLButtonElement>) => {
               const el = e.currentTarget
               el.style.background = "rgba(0,191,255,0.25)"
               el.style.borderColor = "rgba(0,191,255,0.8)"
             }}
-            onMouseLeave={e => {
+            onMouseLeave={(e: MouseEvent<HTMLButtonElement>) => {
               const el = e.currentTarget
               el.style.background = "rgba(0,191,255,0.15)"
               el.style.borderColor = "rgba(0,191,255,0.5)"

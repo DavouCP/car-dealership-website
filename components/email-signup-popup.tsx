@@ -1,13 +1,13 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, type MouseEvent, type FormEvent, type ChangeEvent } from "react"
 
-export default function EmailSignupPopup() {
-  const [visible, setVisible] = useState(false)
-  const [email, setEmail] = useState("")
-  const [submitted, setSubmitted] = useState(false)
-  const [error, setError] = useState("")
-  const [loading, setLoading] = useState(false)
+export default function EmailSignupPopup(): JSX.Element | null {
+  const [visible, setVisible] = useState<boolean>(false)
+  const [email, setEmail] = useState<string>("")
+  const [submitted, setSubmitted] = useState<boolean>(false)
+  const [error, setError] = useState<string>("")
+  const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
     const dismissed = localStorage.getItem("autolux_email_popup")
@@ -23,7 +23,7 @@ export default function EmailSignupPopup() {
     setVisible(false)
   }
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault()
     if (!email.includes("@") || !email.includes(".")) {
       setError("Please enter a valid email address.")
@@ -226,7 +226,7 @@ export default function EmailSignupPopup() {
                 <input
                   type="email"
                   value={email}
-                  onChange={e => {
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
                     setEmail(e.target.value)
                     setError("")
                   }}
